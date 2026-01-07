@@ -35,6 +35,12 @@ app.include_router(auth.router, prefix="/auth", tags=["auth"])
 app.include_router(quests.router, prefix="/api/quests", tags=["quests"])
 
 
+# 헬스체크 엔드포인트 (Railway용)
+@app.get("/health")
+async def health_check():
+    return {"status": "ok"}
+
+
 # 전역 템플릿 컨텍스트
 @app.middleware("http")
 async def add_global_context(request: Request, call_next):
