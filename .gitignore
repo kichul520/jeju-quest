@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+.eggs/
+*.egg-info/
+
+# Node (Tailwind 빌드용)
+node_modules/
+npm-debug.log
+
+# 환경 변수
+.env
+.env.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# 테스트
+.pytest_cache/
+.coverage
+htmlcov/

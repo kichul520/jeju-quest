@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 커스텀 스타일 */
+@layer components {
+  /* 퀘스트 카드 */
+  .quest-card {
+    @apply bg-white rounded-lg shadow p-4 cursor-pointer hover:shadow-lg transition;
+  }
+
+  /* 버튼 기본 스타일 */
+  .btn-primary {
+    @apply bg-orange-500 text-white py-3 px-6 rounded-lg font-medium hover:bg-orange-600 transition;
+  }
+
+  .btn-secondary {
+    @apply bg-gray-100 text-gray-700 py-3 px-6 rounded-lg font-medium hover:bg-gray-200 transition;
+  }
+
+  /* 입력 필드 */
+  .input-field {
+    @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none;
+  }
+}
+
+/* Alpine.js x-cloak */
+[x-cloak] {
+  display: none !important;
+}
+
+/* HTMX 로딩 인디케이터 */
+.htmx-request .htmx-indicator {
+  display: inline-block;
+}
+
+.htmx-indicator {
+  display: none;
+}

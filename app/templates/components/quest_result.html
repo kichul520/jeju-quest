@@ -1,0 +1,47 @@
+{% if is_correct %}
+    <!-- 정답 -->
+    <div class="text-center py-6">
+        <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+        </div>
+        <h3 class="text-xl font-bold text-green-600 mb-2">정답입니다!</h3>
+        <p class="text-gray-600 mb-4">{{ points }}P를 획득했습니다</p>
+
+        <div class="bg-gradient-to-r from-orange-400 to-orange-500 text-white rounded-lg p-4 mb-4">
+            <div class="text-sm opacity-80">획득 포인트</div>
+            <div class="text-3xl font-bold">+{{ points }}P</div>
+        </div>
+
+        <button onclick="location.reload()"
+                class="bg-orange-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-orange-600 transition">
+            계속 탐험하기
+        </button>
+    </div>
+{% else %}
+    <!-- 오답 -->
+    <div class="text-center py-6">
+        <div class="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-10 h-10 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </div>
+        <h3 class="text-xl font-bold text-red-600 mb-2">틀렸습니다</h3>
+        <p class="text-gray-600 mb-4">다시 한번 주변을 잘 살펴보세요!</p>
+
+        <form hx-post="/api/quests/submit-answer"
+              hx-target="#quest-challenge-area"
+              hx-swap="innerHTML"
+              class="space-y-3">
+            <input type="hidden" name="quest_id" value="{{ quest.id }}">
+            <input type="text" name="answer" required
+                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none"
+                   placeholder="다시 입력하세요">
+            <button type="submit"
+                    class="w-full bg-orange-500 text-white py-3 rounded-lg font-medium hover:bg-orange-600 transition">
+                다시 제출
+            </button>
+        </form>
+    </div>
+{% endif %}
