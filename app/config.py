@@ -1,44 +1,38 @@
-from pydantic_settings import BaseSettings, SettingsConfigDict
-from functools import lru_cache
+"""환경 변수 설정 - Railway 호환"""
 import os
+from functools import lru_cache
+from dataclasses import dataclass
 
 
-class Settings(BaseSettings):
+@dataclass
+class Settings:
+    """앱 설정 - 환경 변수에서 직접 로드"""
     # App
     app_name: str = "Jeju Quest"
     debug: bool = False
     secret_key: str = "change-this-secret-key-in-production"
-
+    
     # Supabase
     supabase_url: str = ""
-    supabase_key: str = ""  # service_role key (서버 전용)
-
+    supabase_key: str = ""
+    
     # Kakao Map
     kakao_js_key: str = ""
-
-    model_config = SettingsConfigDict(
-        env_file=".env",
-        env_file_encoding="utf-8",
-        extra="ignore",
-    )
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        # Railway 환경변수 직접 로드 (pydantic이 읽지 못할 경우 대비)
-        if not self.kakao_js_key and os.environ.get("KAKAO_JS_KEY"):
-            self.kakao_js_key = os.environ.get("KAKAO_JS_KEY", "")
-        if not self.supabase_url and os.environ.get("SUPABASE_URL"):
-            self.supabase_url = os.environ.get("SUPABASE_URL", "")
-        if not self.supabase_key and os.environ.get("SUPABASE_KEY"):
-            self.supabase_key = os.environ.get("SUPABASE_KEY", "")
-        if not self.secret_key and os.environ.get("SECRET_KEY"):
-            self.secret_key = os.environ.get("SECRET_KEY", "")
+    
+    def __post_init__(self):
+        """환경 변수에서 값 로드"""
+        self.debug = os.environ.get("DEBUG", "false").lower() == "true"
+        self.secret_key = os.environ.get("SECRET_KEY", self.secret_key)
+        self.supabase_url = os.environ.get("SUPABASE_URL", "")
+        self.supabase_key = os.environ.get("SUPABASE_KEY", "")
+        self.kakao_js_key = os.environ.get("KAKAO_JS_KEY", "")
+        
+        # 디버그 출력
+        print(f"[Config] KAKAO_JS_KEY loaded: {bool(self.kakao_js_key)} (len={len(self.kakao_js_key)})")
+        print(f"[Config] SUPABASE_URL loaded: {bool(self.supabase_url)}")
+        print(f"[Config] SUPABASE_KEY loaded: {bool(self.supabase_key)}")
 
 
-@lru_cache
+# 캐싱 없이 매번 새로 생성 (환경 변수 변경 반영)
 def get_settings() -> Settings:
-    # 디버그: 환경 변수 직접 확인
-    print(f"[DEBUG] KAKAO_JS_KEY from os.environ: {os.environ.get('KAKAO_JS_KEY', 'NOT SET')[:10]}...")
     return Settings()
-
-
