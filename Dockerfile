@@ -13,7 +13,8 @@ RUN apt-get update && apt-get install -y \
 
 # Python 의존성 설치
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
 
 # 앱 코드 복사
 COPY . .
