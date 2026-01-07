@@ -1,7 +1,9 @@
-"""환경 변수 설정 - Railway 호환"""
+"""환경 변수 설정 - Railway 호환 v2"""
 import os
 from functools import lru_cache
 from dataclasses import dataclass
+
+print("=== CONFIG.PY LOADED - VERSION 2 ===")
 
 
 @dataclass
