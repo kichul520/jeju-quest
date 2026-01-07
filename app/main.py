@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from contextlib import asynccontextmanager
+import os
 
 from app.config import get_settings
 from app.routers import pages, auth, quests
@@ -9,11 +10,16 @@ from app.routers import pages, auth, quests
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # 시작 시 실행
-    print("Jeju Quest 서버 시작!")
+    # 시작 시 환경변수 검증
+    settings = get_settings()
+    print(f"=== Jeju Quest 서버 시작 ===")
+    print(f"DEBUG: {settings.debug}")
+    print(f"SUPABASE_URL: {'설정됨' if settings.supabase_url else '미설정!'}")
+    print(f"SUPABASE_KEY: {'설정됨' if settings.supabase_key else '미설정!'}")
+    print(f"KAKAO_JS_KEY: {'설정됨' if settings.kakao_js_key else '미설정!'}")
+    print(f"PORT: {os.environ.get('PORT', '8000')}")
     yield
-    # 종료 시 실행
-    print("Jeju Quest 서버 종료!")
+    print("=== Jeju Quest 서버 종료 ===")
 
 
 settings = get_settings()
