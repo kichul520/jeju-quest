@@ -19,5 +19,5 @@ COPY . .
 # 포트 노출
 EXPOSE 8000
 
-# 앱 실행
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# 앱 실행 (Railway는 PORT 환경변수 사용)
+CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
