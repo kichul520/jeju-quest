@@ -47,6 +47,19 @@ async def health_check():
     return {"status": "ok"}
 
 
+# 환경 변수 디버그 (임시 - 확인 후 삭제)
+@app.get("/debug/env")
+async def debug_env():
+    settings = get_settings()
+    return {
+        "kakao_js_key_set": bool(settings.kakao_js_key),
+        "kakao_js_key_length": len(settings.kakao_js_key) if settings.kakao_js_key else 0,
+        "kakao_js_key_preview": settings.kakao_js_key[:8] + "..." if len(settings.kakao_js_key) > 8 else settings.kakao_js_key,
+        "supabase_url_set": bool(settings.supabase_url),
+        "supabase_key_set": bool(settings.supabase_key),
+    }
+
+
 # 전역 템플릿 컨텍스트
 @app.middleware("http")
 async def add_global_context(request: Request, call_next):
